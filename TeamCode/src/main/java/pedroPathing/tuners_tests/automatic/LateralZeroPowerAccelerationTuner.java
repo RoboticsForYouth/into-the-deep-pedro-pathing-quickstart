@@ -68,6 +68,9 @@ public class LateralZeroPowerAccelerationTuner extends OpMode {
 
     private Telemetry telemetryA;
 
+    FConstants constants = new FConstants();
+
+
     private boolean stopping;
     private boolean end;
 

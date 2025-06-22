@@ -38,7 +38,7 @@ import pedroPathing.constants.*;
  * @version 1.0, 5/6/2024
  */
 @Config
-//@TeleOp(group = "Teleop Test", name = "Localization Test")
+@TeleOp(group = "Teleop Test", name = "Localization Test")
 public class LocalizationTest extends OpMode {
     private PoseUpdater poseUpdater;
     private DashboardPoseTracker dashboardPoseTracker;
@@ -49,6 +49,9 @@ public class LocalizationTest extends OpMode {
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;
     private List<DcMotorEx> motors;
+
+    FConstants constants = new FConstants();
+
 
     /**
      * This initializes the PoseUpdater, the mecanum drive motors, and the FTC Dashboard telemetry.

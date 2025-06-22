@@ -60,8 +60,12 @@ public class StrafeVelocityTuner extends OpMode {
 
     private PoseUpdater poseUpdater;
 
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 35;
     public static double RECORD_NUMBER = 10;
+
+
+    FConstants constants = new FConstants();
+
 
     private Telemetry telemetryA;
 
