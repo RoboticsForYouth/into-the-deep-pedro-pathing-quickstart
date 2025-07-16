@@ -1,5 +1,6 @@
 package pedroPathing.az.tools;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,7 +9,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 
 //@TeleOp
-@TeleOp
+@Autonomous
 public class DoubleArm extends LinearOpMode {
 
     DcMotorEx doubleArmMotor1;
@@ -54,7 +55,7 @@ public class DoubleArm extends LinearOpMode {
         COLLECT((int)(17.5 * ARM_CONVERSION_FACTOR)),  //(-785),
         LOW_BASKET_DROP((int)(90 * ARM_CONVERSION_FACTOR)),
 
-        SPECIMEN_PICKUP_UP((int)(0*ARM_CONVERSION_FACTOR)),
+        SPECIMEN_PICKUP_UP((int)(7*ARM_CONVERSION_FACTOR)),
 
         LEVEL_TWO_HANG((int)(80*ARM_CONVERSION_FACTOR)),
 

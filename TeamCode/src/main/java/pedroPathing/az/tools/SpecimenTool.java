@@ -1,6 +1,7 @@
 package pedroPathing.az.tools;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,13 +11,13 @@ import pedroPathing.az.auto.RightAuto;
 
 @TeleOp
 public class SpecimenTool extends LinearOpMode {
-    public  LinearOpMode opMode;
+    public LinearOpMode opMode;
     public DoubleArm arm;
     public EnhancedClaw gripper;
     public Slides slides;
 
 
-    public SpecimenTool(){
+    public SpecimenTool() {
         super();
     }
 
@@ -25,35 +26,18 @@ public class SpecimenTool extends LinearOpMode {
         init(opMode);
     }
 
-    private void init(LinearOpMode opMode){
+    private void init(LinearOpMode opMode) {
         arm = new DoubleArm(opMode);
         gripper = new EnhancedClaw(opMode);
         slides = new Slides(opMode);
     }
 
-    public void printPos(Telemetry telemetry){
+    public void printPos(Telemetry telemetry) {
         telemetry.addData("Slide Pos", slides.printCurrentPos());
         telemetry.addData("Arm Pos:", arm.getCurrentPosition());
         telemetry.addData("Gripper Pos:", gripper.toString());
         telemetry.update();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -76,9 +60,9 @@ public class SpecimenTool extends LinearOpMode {
 //        sleep(1000);
     }
 
-    public void teleOpHighReset () {
+    public void teleOpHighReset() {
 //        slides.collect();
-        gripper.samplePickup();
+        gripper.move();
         slides.setPosAndWait((int) Slides.SlidesPos.COLLECT.getValue());
 
 //        sleep(1000);
@@ -145,10 +129,14 @@ public class SpecimenTool extends LinearOpMode {
         gripper.sampleDrop();
     }
 
-    public void teleOpSlidesExtend(float factor) {slides.extend(factor);}
+    public void teleOpSlidesExtend(float factor) {
+        slides.extend(factor);
+    }
     //teleOpSlidesExtend by a factor between 0 and 1
 
-    public void teleOpArmExtend(float factor) {arm.extend(factor);}
+    public void teleOpArmExtend(float factor) {
+        arm.extend(factor);
+    }
     //teleOpSlidesExtend by a factor between 0 and 1
 
     public void teleOpSpecimenHangPos() {
@@ -162,15 +150,15 @@ public class SpecimenTool extends LinearOpMode {
 
     public void teleOpSpecimenCollect() {
         gripper.specimenPickUp();
-        sleep(500);
+//        sleep(500);
 
         arm.specimenCollect();
         sleep(500);
-        slides.specimenCollect();
+        slides.move();
 //        sleep(1000);
     }
 
-    public void teleOpLevel2Hang(){
+    public void teleOpLevel2Hang() {
 
         gripper.gripperHang();
 
@@ -203,7 +191,7 @@ public class SpecimenTool extends LinearOpMode {
     //--------------------------------------------------------------------------------------------------------------------
     //LEFT AUTO!!!!
 
-    public void leftAutoReset(){
+    public void leftAutoReset() {
         slides.resetPos();
         sleep(2000);
         arm.reset();
@@ -229,7 +217,7 @@ public class SpecimenTool extends LinearOpMode {
         });
     }
 
-    public void leftAutoCollect(final Slides.SlidesPos slidesPos, final EnhancedClaw.WRIST_POS wristPos, final DoubleArm.DoubleArmPos armPos)   {
+    public void leftAutoCollect(final Slides.SlidesPos slidesPos, final EnhancedClaw.WRIST_POS wristPos, final DoubleArm.DoubleArmPos armPos) {
         AZUtil.runInParallel(new Runnable() {
             @Override
             public void run() {
@@ -244,7 +232,7 @@ public class SpecimenTool extends LinearOpMode {
         });
     }
 
-    public void thirdLeftAutoCollect(final Slides.SlidesPos slidesPos, final EnhancedClaw.WRIST_POS wristPos, final DoubleArm.DoubleArmPos armPos)   {
+    public void thirdLeftAutoCollect(final Slides.SlidesPos slidesPos, final EnhancedClaw.WRIST_POS wristPos, final DoubleArm.DoubleArmPos armPos) {
         AZUtil.runInParallel(new Runnable() {
             @Override
             public void run() {
@@ -307,7 +295,7 @@ public class SpecimenTool extends LinearOpMode {
     //--------------------------------------------------------------------------------------------------------------------
     //RIGHT AUTO!!!!
 
-    public void rightAutoReset(){
+    public void rightAutoReset() {
         slides.resetPos();
         sleep(2000);
         arm.reset();
@@ -402,18 +390,6 @@ public class SpecimenTool extends LinearOpMode {
     //--------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public void runOpMode() throws InterruptedException {
         this.opMode = this;
@@ -422,30 +398,51 @@ public class SpecimenTool extends LinearOpMode {
         waitForStart();
 
 //        autoTest();
-        while(opModeIsActive()){
+        teleOpTest();
 
-            if(gamepad1.dpad_up){
-                slides.moveUpSlow();
+    }
+
+    private void teleOpTest() {
+        teleOpSpecimenToolInit();
+
+        while (opModeIsActive()) {
+
+            if (gamepad1.a) {
+                teleOpSpecimenToolInit();
             }
 
-            if(gamepad1.dpad_down){
-                slides.moveDown();
+            if (gamepad1.b) {
+                teleOpEject();
             }
 
-            if( gamepad1.dpad_left){
-                arm.moveDownSlow();
+            if (gamepad1.x) {
+                teleOpCollectVertical();
+            }
+            if (gamepad1.y) {
+                teleOpSpecimenCollect();
             }
 
-            if( gamepad1.dpad_right){
-                arm.moveUp();
+            if (gamepad1.dpad_up) {
+                teleOpSpecimenLowBasket();
             }
-            if( gamepad1.b){
-//                arm.setupPos();
-//                arm.moveToPosition(1160); //changed for 435 rpm motor to 312rpm
+
+            if (gamepad1.dpad_down) {
+                teleOpLevel2Hang();
+            }
+
+            if (gamepad1.left_bumper) {
+                teleOpDropHighBasket();
+            }
+            if (gamepad1.right_trigger > 0) {
+                teleOpSlidesExtend(gamepad1.right_trigger);
+            }
+            if (gamepad1.left_trigger > 0) {
+                teleOpArmExtend(gamepad1.left_trigger);
+            }
+            if (gamepad1.right_bumper) {
+                teleOpSpecimenHangPos();
             }
         }
-
-
     }
 
     private void autoTest() {
