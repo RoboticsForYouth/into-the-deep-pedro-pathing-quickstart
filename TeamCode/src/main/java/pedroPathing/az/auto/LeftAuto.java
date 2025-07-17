@@ -8,9 +8,7 @@ import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import pedroPathing.az.tools.DoubleArm;
-import pedroPathing.az.tools.EnhancedClaw;
-import pedroPathing.az.tools.Slides;
+// Removed unused imports - using generic teleOp methods instead
 import pedroPathing.constants.AutoConstants;
 import pedroPathing.constants.AutoState;
 
@@ -135,7 +133,7 @@ public class LeftAuto extends BaseAuto {
             case LEFT_COLLECT_SAMPLE_1:
                 if (!follower.isBusy()) {
                     // Move to high basket position and drop preloaded sample
-                    specimenTool.leftAutoDropHighBasket();
+                    specimenTool.teleOpDropHighBasket();
                     
                     runInParallel(() -> {
                         sleep(500); // Wait for drop
@@ -150,11 +148,7 @@ public class LeftAuto extends BaseAuto {
             case LEFT_SCORE_SAMPLE_1:
                 if (!follower.isBusy()) {
                     // Collect first sample
-                    specimenTool.leftAutoCollect(
-                        Slides.SlidesPos.LEFT_AUTO_PICKUP_FIRST,
-                        EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_FIRST,
-                        DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_FIRST
-                    );
+                    specimenTool.teleOpCollect();
                     
                     runInParallel(() -> {
                         sleep(800); // Wait for collection
@@ -169,7 +163,7 @@ public class LeftAuto extends BaseAuto {
             case LEFT_COLLECT_SAMPLE_2:
                 if (!follower.isBusy()) {
                     // Score first sample
-                    specimenTool.leftAutoLaterDropsHighBasket();
+                    specimenTool.teleOpDropHighBasket();
                     
                     runInParallel(() -> {
                         sleep(600); // Wait for scoring
@@ -184,11 +178,7 @@ public class LeftAuto extends BaseAuto {
             case LEFT_SCORE_SAMPLE_2:
                 if (!follower.isBusy()) {
                     // Collect second sample
-                    specimenTool.leftAutoCollect(
-                        Slides.SlidesPos.LEFT_AUTO_PICKUP_SECOND,
-                        EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_SECOND,
-                        DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_SECOND
-                    );
+                    specimenTool.teleOpCollect();
                     
                     runInParallel(() -> {
                         sleep(800); // Wait for collection
@@ -203,7 +193,7 @@ public class LeftAuto extends BaseAuto {
             case LEFT_COLLECT_SAMPLE_3:
                 if (!follower.isBusy()) {
                     // Score second sample
-                    specimenTool.leftAutoLaterDropsHighBasket();
+                    specimenTool.teleOpDropHighBasket();
                     
                     runInParallel(() -> {
                         sleep(600); // Wait for scoring
@@ -218,11 +208,7 @@ public class LeftAuto extends BaseAuto {
             case LEFT_SCORE_SAMPLE_3:
                 if (!follower.isBusy()) {
                     // Collect third sample
-                    specimenTool.leftAutoCollect(
-                        Slides.SlidesPos.LEFT_AUTO_PICKUP_THIRD,
-                        EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_THIRD,
-                        DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_THIRD
-                    );
+                    specimenTool.teleOpCollect();
                     
                     runInParallel(() -> {
                         sleep(800); // Wait for collection
@@ -237,7 +223,7 @@ public class LeftAuto extends BaseAuto {
             case LEFT_PUSH_SAMPLES_TO_ZONE:
                 if (!follower.isBusy()) {
                     // Score third sample
-                    specimenTool.leftAutoLaterDropsHighBasket();
+                    specimenTool.teleOpDropHighBasket();
                     
                     runInParallel(() -> {
                         sleep(600); // Wait for scoring
@@ -254,10 +240,12 @@ public class LeftAuto extends BaseAuto {
                     // Check if we have time for ascent (leave 5 seconds buffer)
                     if (opmodeTimer.getElapsedTimeSeconds() < AutoConstants.AUTO_TIMEOUT_SECONDS - 5.0) {
                         // Attempt level 1 ascent
-                        candyCane.leftAutoLevelOneAscent();
+                        candyCane.preLeftAutoLevelOneAscent();
                         
                         runInParallel(() -> {
-                            sleep(1000); // Wait for ascent setup
+                            sleep(500);
+                            candyCane.leftAutoLevelOneAscent();
+                            sleep(500); // Wait for ascent setup
                             follower.followPath(ascentPath, true);
                         });
                         
@@ -292,7 +280,7 @@ public class LeftAuto extends BaseAuto {
     @Override
     protected void resetSubsystems() {
         // Reset to starting positions for left auto
-        specimenTool.leftAutoReset();
+        specimenTool.reset();
         candyCane.reset();
         
         // Set starting pose
