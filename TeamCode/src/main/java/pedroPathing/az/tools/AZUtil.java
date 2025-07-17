@@ -11,13 +11,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
 public class AZUtil {
 
-    private static final HashMap<String, Object> printMap = new HashMap<>();
+    private static final ConcurrentHashMap<String, Object> printMap = new ConcurrentHashMap<>();
 
 
     public static void setMotorTargetPosition(DcMotor motor, int pos, double power) {
@@ -58,7 +59,7 @@ public class AZUtil {
 
     static ExecutorService pool = Executors.newFixedThreadPool(1);
 
-    static HashMap<String, ExecutorService> poolMap = new HashMap<>();
+    static ConcurrentHashMap<String, ExecutorService> poolMap = new ConcurrentHashMap<>();
 
     public static final String TURN_TABLE = "TurnTable";
     public static final String FREIGHT_INTAKE_SENSOR = "FreightIntakeSensor";
@@ -70,14 +71,19 @@ public class AZUtil {
 
     // todo: write your code here
 
-    static Thread thread = null;
+    /**
+     * Run a task in parallel using a dedicated thread pool
+     * This is safer than creating new threads for each task
+     */
     public static void runInParallel(Runnable r) {
-//        while (thread != null ){
-//            thread.join();
-//            // pool.submit(r );
-//        }
-        thread = new Thread(()->{r.run(); return;});
-        thread.start();
+        pool.execute(() -> {
+            try {
+                r.run();
+            } catch (Exception e) {
+                // Log error but don't crash the thread pool
+                System.err.println("Error in parallel task: " + e.getMessage());
+            }
+        });
     }
 
     //runs in specified pool. will create pool if does not exist. Recommended that

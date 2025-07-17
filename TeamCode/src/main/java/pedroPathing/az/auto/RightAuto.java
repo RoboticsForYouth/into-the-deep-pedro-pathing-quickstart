@@ -10,6 +10,7 @@ import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import pedroPathing.constants.AutoConstants;
 
 import pedroPathing.az.tools.AZUtil;
 import pedroPathing.az.tools.CandyCane;
@@ -158,13 +159,14 @@ public class RightAuto extends LinearOpMode {
                 setPathState(1);
                 break;
             case 1:
-                if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                if(pathTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_DELAY) {
                     specimenTool.gripper.rightAutoSpecimenDropPos();
                     specimenTool.firstRightAutoSpecimenDrop();
 
 
                     setPathState(2);
                 }
+                break;
             case 2:
                 if(!follower.isBusy()) {
                     follower.followPath(spikeMark1Traj,true);
@@ -188,8 +190,9 @@ public class RightAuto extends LinearOpMode {
                     setPathState(4);
 
                 }
+                break;
             case 4:
-                if(actionTimer.getElapsedTimeSeconds() > 0.5) {
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_DELAY) {
                     follower.followPath(pushInZone1Traj,true);
                     setPathState(5);
                 }
@@ -209,8 +212,9 @@ public class RightAuto extends LinearOpMode {
 
                     setPathState(7);
                 }
+                break;
             case 7:
-                if(actionTimer.getElapsedTimeSeconds() > 0.17) {
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.CANDY_CANE_ACTION_DELAY) {
 
                     follower.followPath(pushInZone2Traj,true);
                     setPathState(8);
@@ -231,8 +235,9 @@ public class RightAuto extends LinearOpMode {
 
                     setPathState(10);
                 }
+                break;
             case 10:
-                if(actionTimer.getElapsedTimeSeconds() > 0.17) {
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.CANDY_CANE_ACTION_DELAY) {
 
                     follower.followPath(pushInZone3Traj, true);
                     setPathState(11);
@@ -245,8 +250,9 @@ public class RightAuto extends LinearOpMode {
 
                     setPathState(12);
                 }
+                break;
             case 12:
-                if(actionTimer.getElapsedTimeSeconds() > 0.1) {
+                if(actionTimer.getElapsedTimeSeconds() > 0.1) { // TODO: Move to AutoConstants
 
                     follower.followPath(collect1Traj, true);
                     setPathState(13);
@@ -259,7 +265,7 @@ public class RightAuto extends LinearOpMode {
                     AZUtil.runInParallel(new Runnable() {
                         @Override
                         public void run() {
-                            sleep(950);
+                            sleep((int)AutoConstants.SPECIMEN_HANG_DELAY_MS);
                             specimenTool.rightAutoSpecimenHangPos();
                         }
                     });
@@ -291,7 +297,7 @@ public class RightAuto extends LinearOpMode {
                     AZUtil.runInParallel(new Runnable() {
                         @Override
                         public void run() {
-                            sleep(950);
+                            sleep((int)AutoConstants.SPECIMEN_HANG_DELAY_MS);
                             specimenTool.rightAutoSpecimenHangPos();
                         }
                     });
@@ -323,7 +329,7 @@ public class RightAuto extends LinearOpMode {
                     AZUtil.runInParallel(new Runnable() {
                         @Override
                         public void run() {
-                            sleep(950);
+                            sleep((int)AutoConstants.SPECIMEN_HANG_DELAY_MS);
                             specimenTool.rightAutoSpecimenHangPos();
                         }
                     });
@@ -355,7 +361,7 @@ public class RightAuto extends LinearOpMode {
                     AZUtil.runInParallel(new Runnable() {
                         @Override
                         public void run() {
-                            sleep(950);
+                            sleep((int)AutoConstants.SPECIMEN_HANG_DELAY_MS);
                             specimenTool.rightAutoSpecimenHangPos();
                         }
                     });
@@ -395,12 +401,12 @@ public class RightAuto extends LinearOpMode {
         initAuto();
         waitForStart();
 
-        sleep(3000);
+        sleep(AutoConstants.STARTUP_DELAY_MS);
 
         opmodeTimer.resetTimer();
         setPathState(0);
 
-        while (!isStopRequested() && pathState < 6) {
+        while (!isStopRequested() && pathState != AutoConstants.FINAL_STATE && opmodeTimer.getElapsedTimeSeconds() < AutoConstants.AUTO_TIMEOUT_SECONDS) {
             follower.update();
             autonomousPathUpdate();
 
@@ -410,6 +416,7 @@ public class RightAuto extends LinearOpMode {
             telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.addData("action timer: ", actionTimer.getElapsedTimeSeconds());
             telemetry.addData("path timer: ", pathTimer.getElapsedTimeSeconds());
+            telemetry.addData("opmode timer: ", opmodeTimer.getElapsedTimeSeconds());
             telemetry.update();
         }
     }
