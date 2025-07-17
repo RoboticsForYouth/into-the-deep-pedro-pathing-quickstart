@@ -227,10 +227,10 @@ public abstract class BaseAuto extends LinearOpMode {
     protected void emergencyStopSubsystems() {
         try {
             if (specimenTool != null && specimenTool.slides != null) {
-                specimenTool.slides.emergencyStop();
+                specimenTool.slides.emergencyResetPos();
             }
             if (specimenTool != null && specimenTool.arm != null) {
-                specimenTool.arm.emergencyStop();
+                specimenTool.arm.reset();
             }
         } catch (Exception e) {
             telemetry.addLine("Error in emergency stop: " + e.getMessage());
