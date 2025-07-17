@@ -79,6 +79,7 @@ public class DoubleArm extends LinearOpMode {
 
         //--------------------------------------------------------------------------------------------------------------------
         //RIGHT AUTO!!!
+        RIGHT_AUTO_RESET((int)(22 * ARM_CONVERSION_FACTOR)),
         RIGHT_AUTO_SPECIMEN_DROP_INTEMEDIATE_WAIT((int)(20 * ARM_CONVERSION_FACTOR)),
         RIGHT_AUTO_SPECIMEN_DROP((int)(92 * ARM_CONVERSION_FACTOR)), //(600)
         RIGHT_AUTO_SPECIMEN_PICKUP_UP((int)(0*ARM_CONVERSION_FACTOR)),
@@ -148,7 +149,6 @@ public class DoubleArm extends LinearOpMode {
             power = 0.25;
         }
         AZUtil.setBothMotorTargetPosition(doubleArmMotor1, doubleArmMotor2, pos, power);
-
 //        InitialValues.CurrentArmPos = pos;
 
     }
@@ -313,8 +313,10 @@ public class DoubleArm extends LinearOpMode {
     //RIGHT AUTO!!!
 
     public void rightAutoReset() {
-        setPos(DoubleArmPos.RESET.value);
+        setPos(DoubleArmPos.RIGHT_AUTO_RESET.value);
     }
+    public void rightAutoSpecimenDrop() { setPos(DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.value);}
+
 
     //--------------------------------------------------------------------------------------------------------------------
 

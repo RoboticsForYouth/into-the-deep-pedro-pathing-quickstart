@@ -70,7 +70,7 @@ public class EnhancedClaw extends LinearOpMode {
     }
 
     public enum WRIST_POS {
-        RESET(0.3), //0.2 0.77 0.2
+        RESET(0.485), //0.2 0.77 0.2
 
         MOVE(0.485), //0.5
         PICKUP(0.485), //0.5
@@ -91,8 +91,8 @@ public class EnhancedClaw extends LinearOpMode {
 
         //--------------------------------------------------------------------------------------------------------------------
         //RIGHT AUTO!!!
-        RIGHT_AUTO_PICKUP_SPECIMEN(0.75), //0.75
-        RIGHT_AUTO_DROP_OFF_SPECIMEN(0.2), //0.2 0.77
+        RIGHT_AUTO_PICKUP_SPECIMEN(0.485), //0.75
+        RIGHT_AUTO_DROP_OFF_SPECIMEN(1), //0.2 0.77
         //--------------------------------------------------------------------------------------------------------------------
 
         ;
@@ -331,6 +331,20 @@ public class EnhancedClaw extends LinearOpMode {
 
             if (gamepad1.dpad_down) {
                 roller.setPower(RollerPower.PICKUP.getPower());
+            }
+
+            if (gamepad2.dpad_down) {
+                elbow.moveDown();
+                sleep(300);
+            }
+
+            if (gamepad2.dpad_up) {
+                elbow.moveUp();
+                sleep(300);
+            }
+
+            if(gamepad2.a) {
+                rightAutoSpecimenDropPos();
             }
 
 

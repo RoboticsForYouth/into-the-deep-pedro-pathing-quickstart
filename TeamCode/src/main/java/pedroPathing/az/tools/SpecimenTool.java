@@ -298,7 +298,7 @@ public class SpecimenTool extends LinearOpMode {
     public void rightAutoReset() {
         slides.resetPos();
         sleep(2000);
-        arm.reset();
+        arm.rightAutoReset();
         sleep(2000);
         gripper.specimenAutoReset();
         sleep(500);
@@ -373,20 +373,6 @@ public class SpecimenTool extends LinearOpMode {
 //        gripper.specimenDrop();
     }
 
-    public void rightAutoResetEnd() {
-//        gripper.move();
-//        sleep(200);
-        slides.reset();
-//        gripper.drop();
-
-        sleep(200);
-        arm.rightAutoReset();
-        gripper.reset();
-
-////        sleep(1000);
-//        sleep(1000);
-//        gripper.resetPos();
-    }
     //--------------------------------------------------------------------------------------------------------------------
 
 

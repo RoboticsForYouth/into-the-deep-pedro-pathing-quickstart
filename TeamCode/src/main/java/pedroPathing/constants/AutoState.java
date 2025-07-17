@@ -31,7 +31,7 @@ public enum AutoState {
     RIGHT_SCORE_SPECIMEN_4(22, "Score fourth specimen"),
     RIGHT_DROP_SPECIMEN_4(23, "Drop fourth specimen"),
     RIGHT_PARK(24, "Park in observation zone"),
-    
+
     // Left Auto States (Sample-focused)
     LEFT_SCORE_PRELOAD_SAMPLE(0, "Score preloaded sample in high basket"),
     LEFT_COLLECT_SAMPLE_1(1, "Collect first neutral sample"),
@@ -43,28 +43,28 @@ public enum AutoState {
     LEFT_PUSH_SAMPLES_TO_ZONE(7, "Push remaining samples to observation zone"),
     LEFT_ATTEMPT_ASCENT(8, "Attempt level 1 ascent if time permits"),
     LEFT_PARK(9, "Park in observation zone"),
-    
+
     // Common States
     COMPLETED(-1, "Autonomous completed"),
     ERROR_RECOVERY(-2, "Error recovery state"),
     TIMEOUT_RECOVERY(-3, "Timeout recovery state");
-    
+
     private final int value;
     private final String description;
-    
+
     AutoState(int value, String description) {
         this.value = value;
         this.description = description;
     }
-    
+
     public int getValue() {
         return value;
     }
-    
+
     public String getDescription() {
         return description;
     }
-    
+
     /**
      * Get AutoState by value - useful for converting from legacy magic numbers
      */
@@ -76,21 +76,21 @@ public enum AutoState {
         }
         return ERROR_RECOVERY; // Default to error state for unknown values
     }
-    
+
     /**
      * Check if this is a final state (autonomous should stop)
      */
     public boolean isFinalState() {
         return this == COMPLETED || this == ERROR_RECOVERY || this == TIMEOUT_RECOVERY;
     }
-    
+
     /**
      * Check if this is a Right Auto state
      */
     public boolean isRightAutoState() {
         return this.name().startsWith("RIGHT_");
     }
-    
+
     /**
      * Check if this is a Left Auto state
      */
