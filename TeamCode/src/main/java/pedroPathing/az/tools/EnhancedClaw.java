@@ -52,6 +52,7 @@ public class EnhancedClaw extends LinearOpMode {
         roller.setPower(RollerPower.EJECT.getPower());
     }
 
+
     public enum RollerPower {
         PICKUP(-1),
         EJECT(1.0),
@@ -77,7 +78,7 @@ public class EnhancedClaw extends LinearOpMode {
         DROP_OFF(.485), //0.55
         PICKUP_90(0.21),
         PICKUP_SPECIMEN(0.75), //0.75
-        TELEOP_DROP_OFF_SPECIMEN(0.2), //0.2 0.77
+        TELEOP_DROP_OFF_SPECIMEN(0), //0.2 0.77
 
 
         //--------------------------------------------------------------------------------------------------------------------
@@ -170,6 +171,13 @@ public class EnhancedClaw extends LinearOpMode {
         elbow.setElbowPos(Elbow.ELBOW_POS.RESET.getPos());
         setWristPos(WRIST_POS.RESET.getPos());
     }
+
+    public void specimenPickUpFromFence() {
+        roller.setPower(RollerPower.PICKUP.getPower());
+        elbow.setElbowPos(Elbow.ELBOW_POS.SPECIMEN_FENCE_PICKUP.getPos());
+        setWristPos(WRIST_POS.MOVE.getPos());
+    }
+
 
     public void specimenAutoReset() {
         elbow.setElbowPos(Elbow.ELBOW_POS.RESET.getPos());

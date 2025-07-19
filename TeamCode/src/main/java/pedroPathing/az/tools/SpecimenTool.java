@@ -142,8 +142,9 @@ public class SpecimenTool extends LinearOpMode {
     public void teleOpSpecimenHangPos() {
         arm.setArmPos(DoubleArm.DoubleArmPos.TELEOP_SPECIMEN_DROP);
         slides.moveToPosition(Slides.SlidesPos.TELEOP_SPECIMEN_DROP);
+        sleep(2000);
+
         gripper.teleOpSpecimenDropPos();
-        sleep(1000);
         slides.stopMotor();
 //        gripper.specimenDrop();
     }
@@ -153,6 +154,16 @@ public class SpecimenTool extends LinearOpMode {
 //        sleep(500);
 
         arm.specimenCollect();
+        sleep(500);
+        slides.move();
+//        sleep(1000);
+    }
+
+    public void teleOpSpecimenPickup() {
+        gripper.specimenPickUpFromFence();
+//        sleep(500);
+
+        arm.specimenPickupFromFence();
         sleep(500);
         slides.move();
 //        sleep(1000);
@@ -428,8 +439,13 @@ public class SpecimenTool extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 teleOpSpecimenHangPos();
             }
+
+            if( gamepad1.dpad_left){
+                teleOpSpecimenPickup();
+            }
         }
     }
+
 
     private void autoTest() {
         teleOpSpecimenToolInit();

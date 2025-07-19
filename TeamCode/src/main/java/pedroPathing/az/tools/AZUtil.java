@@ -71,19 +71,14 @@ public class AZUtil {
 
     // todo: write your code here
 
-    /**
-     * Run a task in parallel using a dedicated thread pool
-     * This is safer than creating new threads for each task
-     */
+    static Thread thread = null;
     public static void runInParallel(Runnable r) {
-        pool.execute(() -> {
-            try {
-                r.run();
-            } catch (Exception e) {
-                // Log error but don't crash the thread pool
-                System.err.println("Error in parallel task: " + e.getMessage());
-            }
-        });
+//        while (thread != null ){
+//            thread.join();
+//            // pool.submit(r );
+//        }
+        thread = new Thread(()->{r.run(); return;});
+        thread.start();
     }
 
     //runs in specified pool. will create pool if does not exist. Recommended that
