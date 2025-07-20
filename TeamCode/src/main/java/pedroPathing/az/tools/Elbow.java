@@ -46,32 +46,33 @@ public class Elbow extends LinearOpMode {
 
 
     public enum ELBOW_POS {
-        PICKUP(0.1), //0.09
-        DROP(0.7), //0.2
-        HANG_POS(0.5), ///0.2
-        SPECIMEN_PICKUP(0.3), //0.25
-        MOVE(0.1), //0.35
-        TELEOP_SPECIMEN_DROP(1),
+        PICKUP(0.13), //0.09
+        DROP(0.73), //0.2
+        HANG_POS(0.53), ///0.2
+        SPECIMEN_PICKUP(0.33), //0.25
+        MOVE(0.13), //0.35
+        TELEOP_SPECIMEN_DROP(0.88),
 
-        RESET(0.85), //0.75
+        RESET(0.88), //0.75
 
 
         //--------------------------------------------------------------------------------------------------------------------
         //LEFT AUTO!!!
-        LEFT_AUTO_RESET(0.7),
-        LEFT_AUTO_DROP(0.6), //0.49
-        LEFT_AUTO_PICKUP(0.09), //0.2 //0.17
-        LEFT_AUTO_DROP_INTERMEDIATE(0.3),
+        LEFT_AUTO_RESET(0.73),
+        LEFT_AUTO_DROP(0.63), //0.49
+        LEFT_AUTO_PICKUP(0.12), //0.2 //0.17
+        LEFT_AUTO_DROP_INTERMEDIATE(0.33),
         //--------------------------------------------------------------------------------------------------------------------
 
         //--------------------------------------------------------------------------------------------------------------------
         //RIGHT AUTO!!!
-        RIGHT_AUTO_SPECIMEN_PICKUP(0.42), //0.25
-        RIGHT_AUTO_SPECIMEN_DROP(0.7), //0.7
-        RIGHT_AUTO_DOWN(0.6),
+        RIGHT_AUTO_SPECIMEN_PICKUP(0.45), //0.25
+        RIGHT_AUTO_SPECIMEN_DROP(0.88), //0.7
+        RIGHT_AUTO_RESET(0),
+        RIGHT_AUTO_DOWN(0.63),
         //--------------------------------------------------------------------------------------------------------------------
 
-        SPECIMEN_FENCE_PICKUP(0.32);
+        SPECIMEN_FENCE_PICKUP(0.45);
 
         public double getPos() {
             return pos;

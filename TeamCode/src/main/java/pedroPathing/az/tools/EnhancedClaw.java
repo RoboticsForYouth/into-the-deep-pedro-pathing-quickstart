@@ -92,7 +92,7 @@ public class EnhancedClaw extends LinearOpMode {
         //--------------------------------------------------------------------------------------------------------------------
         //RIGHT AUTO!!!
         RIGHT_AUTO_PICKUP_SPECIMEN(0.485), //0.75
-        RIGHT_AUTO_DROP_OFF_SPECIMEN(1), //0.2 0.77
+        RIGHT_AUTO_DROP_OFF_SPECIMEN(0), //0.2 0.77
         //--------------------------------------------------------------------------------------------------------------------
 
         ;
@@ -184,7 +184,7 @@ public class EnhancedClaw extends LinearOpMode {
 
 
     public void specimenAutoReset() {
-        elbow.setElbowPos(Elbow.ELBOW_POS.MOVE.getPos());
+        elbow.setElbowPos(Elbow.ELBOW_POS.RIGHT_AUTO_RESET.getPos());
         roller.setPower(RollerPower.PICKUP.getPower());
     }
 
@@ -228,6 +228,9 @@ public void duringTeleOpReset() {
 //        sleep(500);
         elbow.setElbowPos(Elbow.ELBOW_POS.TELEOP_SPECIMEN_DROP.getPos());
     }
+    public void         preTeleOpSpecimenDropPos() {
+        setWristPos(WRIST_POS.TELEOP_DROP_OFF_SPECIMEN.getPos());
+    }
 
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -259,8 +262,15 @@ public void duringTeleOpReset() {
     //--------------------------------------------------------------------------------------------------------------------
     //RIGHT AUTO!!!
     public void rightAutoSpecimenDropPos() {
+
         roller.setPower(RollerPower.PICKUP.getPower());
         setWristPos(WRIST_POS.RIGHT_AUTO_DROP_OFF_SPECIMEN.getPos());
+        elbow.setElbowPos(Elbow.ELBOW_POS.RIGHT_AUTO_SPECIMEN_DROP.getPos());
+    }
+
+    public void rightAutoSpecimenDropPos0() {
+
+        roller.setPower(RollerPower.PICKUP.getPower());
         elbow.setElbowPos(Elbow.ELBOW_POS.RIGHT_AUTO_SPECIMEN_DROP.getPos());
     }
 

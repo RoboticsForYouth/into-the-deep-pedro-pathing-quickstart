@@ -89,6 +89,9 @@ public class IntoTheDeepTeleOp extends LinearOpMode {
 //        telemetry.addLine(InitialValues.printCurrentPos());
 //        telemetry.update();
 
+        telemetry.addLine("Initialized");
+        telemetry.update();
+
         waitForStart();
 
         specimenTool.teleOpSpecimenToolInit();

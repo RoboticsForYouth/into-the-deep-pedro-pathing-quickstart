@@ -150,6 +150,15 @@ public class SpecimenTool extends LinearOpMode {
 
     public void teleOpSpecimenHangPos() {
         arm.setArmPos(DoubleArm.DoubleArmPos.TELEOP_SPECIMEN_DROP);
+
+        AZUtil.runInParallel(new Runnable() {
+            @Override
+            public void run() {
+                sleep(200);
+                gripper.preTeleOpSpecimenDropPos();
+            }
+        });
+
         slides.moveToPosition(Slides.SlidesPos.TELEOP_SPECIMEN_DROP);
         sleep(1000);
 
