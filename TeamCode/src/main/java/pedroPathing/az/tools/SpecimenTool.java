@@ -51,6 +51,15 @@ public class SpecimenTool extends LinearOpMode {
         gripper.move();
     }
 
+    public void duringTelOpReset() {
+        arm.move();
+//        sleep(1000);
+        gripper.duringTeleOpReset();
+        slides.move();
+//        sleep(500);
+
+    }
+
     public void teleOpCollect() {
         slides.collect();
 //        sleep(500);
@@ -142,7 +151,7 @@ public class SpecimenTool extends LinearOpMode {
     public void teleOpSpecimenHangPos() {
         arm.setArmPos(DoubleArm.DoubleArmPos.TELEOP_SPECIMEN_DROP);
         slides.moveToPosition(Slides.SlidesPos.TELEOP_SPECIMEN_DROP);
-        sleep(2000);
+        sleep(1000);
 
         gripper.teleOpSpecimenDropPos();
         slides.stopMotor();

@@ -54,15 +54,15 @@ public class DoubleArm extends LinearOpMode {
     public enum DoubleArmPos {
         //multiple 1.39 times when we replace 435 motor with 312 motor
         RESET(0),
-        COLLECT((int)(17.5 * ARM_CONVERSION_FACTOR)),  //(-785),
+        COLLECT((int)(17 * ARM_CONVERSION_FACTOR)),  //(-785),
         LOW_BASKET_DROP((int)(90 * ARM_CONVERSION_FACTOR)),
 
-        SPECIMEN_PICKUP_UP((int)(7*ARM_CONVERSION_FACTOR)),
+        SPECIMEN_PICKUP_UP((int)(7.5*ARM_CONVERSION_FACTOR)),
 
         LEVEL_TWO_HANG((int)(80*ARM_CONVERSION_FACTOR)),
 
 
-        MOVE((int)(14 * ARM_CONVERSION_FACTOR)), //(-450),
+        MOVE((int)(17 * ARM_CONVERSION_FACTOR)), //(-450),
         BASKET_DROP((int)(98 * ARM_CONVERSION_FACTOR)),
 
         TELEOP_SPECIMEN_DROP((int)(95 * ARM_CONVERSION_FACTOR)), //(600)

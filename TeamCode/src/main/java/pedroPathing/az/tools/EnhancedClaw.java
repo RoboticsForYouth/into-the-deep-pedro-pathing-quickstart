@@ -18,10 +18,9 @@ public class EnhancedClaw extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private CRServo roller;
     private Servo wrist;
-    //    private ColorSensor sampleSensor;
-//    private Servo elbow;
     Elbow elbow =  null;
     private LinearOpMode linearOpMode;
+    private double currentWristPos = WRIST_POS.RESET.pos;
 
 
     public EnhancedClaw() {
@@ -75,7 +74,7 @@ public class EnhancedClaw extends LinearOpMode {
 
         MOVE(0.485), //0.5
         PICKUP(0.485), //0.5
-        DROP_OFF(.485), //0.55
+        DROP_OFF(0.1), //0.55
         PICKUP_90(0.21),
         PICKUP_SPECIMEN(0.75), //0.75
         TELEOP_DROP_OFF_SPECIMEN(0), //0.2 0.77
@@ -128,6 +127,7 @@ public class EnhancedClaw extends LinearOpMode {
 
 
     public void setWristPos(double pos) {
+        currentWristPos = pos;
         wrist.setPosition(pos + WRIST_CORRECTION);
     }
 
@@ -163,7 +163,11 @@ public class EnhancedClaw extends LinearOpMode {
     }
 
     public void samplePickUp90() {
-        setPos(RollerPower.PICKUP, WRIST_POS.PICKUP_90, Elbow.ELBOW_POS.MOVE);
+        WRIST_POS pickup90 = WRIST_POS.PICKUP_90;
+        if (currentWristPos == pickup90.pos){
+            pickup90 = WRIST_POS.PICKUP;
+        }
+        setPos(RollerPower.PICKUP, pickup90, Elbow.ELBOW_POS.MOVE);
     }
 
     public void reset() {
@@ -180,9 +184,8 @@ public class EnhancedClaw extends LinearOpMode {
 
 
     public void specimenAutoReset() {
-        elbow.setElbowPos(Elbow.ELBOW_POS.RESET.getPos());
+        elbow.setElbowPos(Elbow.ELBOW_POS.MOVE.getPos());
         roller.setPower(RollerPower.PICKUP.getPower());
-        setWristPos(WRIST_POS.RESET.getPos());
     }
 
 
@@ -191,7 +194,10 @@ public class EnhancedClaw extends LinearOpMode {
     }
 
     public void move() {
-        setPos(RollerPower.STOP, WRIST_POS.MOVE, Elbow.ELBOW_POS.MOVE);
+        setPos(RollerPower.PICKUP, WRIST_POS.MOVE, Elbow.ELBOW_POS.MOVE);
+    }
+public void duringTeleOpReset() {
+        setPos(RollerPower.PICKUP, WRIST_POS.MOVE, Elbow.ELBOW_POS.MOVE);
     }
 
     public void sampleDrop() {
@@ -216,7 +222,7 @@ public class EnhancedClaw extends LinearOpMode {
         //wrist and elbow positions do not change
     }
 
-    public void teleOpSpecimenDropPos() {
+    public void         teleOpSpecimenDropPos() {
         roller.setPower(RollerPower.PICKUP.getPower());
         setWristPos(WRIST_POS.TELEOP_DROP_OFF_SPECIMEN.getPos());
 //        sleep(500);
