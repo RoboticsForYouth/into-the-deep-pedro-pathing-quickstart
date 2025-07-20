@@ -321,7 +321,8 @@ public class DoubleArm extends LinearOpMode {
         setPos(DoubleArmPos.RIGHT_AUTO_RESET.value);
     }
     public void rightAutoSpecimenDrop() { setPos(DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.value);}
-
+    public void rightAutoSpecimenCollectPos() {setPos(DoubleArmPos.RIGHT_AUTO_SPECIMEN_PICKUP_UP.value);}
+    public void rightAutoSpecimenDropIntermediateWait() {setPos(DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP_INTEMEDIATE_WAIT.value);}
 
     //--------------------------------------------------------------------------------------------------------------------
 

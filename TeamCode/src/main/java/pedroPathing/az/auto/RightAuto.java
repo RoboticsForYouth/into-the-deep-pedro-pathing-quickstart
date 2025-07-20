@@ -159,7 +159,7 @@ public class RightAuto extends LinearOpMode {
                 setPathState(1);
                 break;
             case 1:
-                if(pathTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_DELAY) {
+                if(pathTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_DELAY_ARM) {
                     specimenTool.gripper.rightAutoSpecimenDropPos();
                     specimenTool.arm.rightAutoSpecimenDrop();
                     motorWaitTimer.resetTimer();
@@ -173,6 +173,7 @@ public class RightAuto extends LinearOpMode {
                         && specimenTool.arm.getCurrentPosition() <
                         (DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.getValue()+AutoConstants.WAIT_TOLERANCE))
                         && (motorWaitTimer.getElapsedTimeSeconds() > AutoConstants.MOTOR_WAIT_DELAY)) {
+
                     actionTimer.resetTimer();
 
                     setPathState(3);
@@ -180,7 +181,7 @@ public class RightAuto extends LinearOpMode {
             }
                 break;
             case 3:
-                if(actionTimer.getElapsedTimeSeconds() > 0.2) {
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_0_DELAY_GRIPPER) {
                     specimenTool.gripper.drop();
                     actionTimer.resetTimer();
 
@@ -188,7 +189,7 @@ public class RightAuto extends LinearOpMode {
                 }
                 break;
             case 4:
-                if(actionTimer.getElapsedTimeSeconds() > 0.22) {
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_0_RESET_GRIPPER_DELAY) {
                     specimenTool.gripper.rightAutoDown();
 
                     setPathState(5);
@@ -203,13 +204,9 @@ public class RightAuto extends LinearOpMode {
                 break;
             case 6:
                 if(!follower.isBusy()) {
-                    AZUtil.runInParallel(new Runnable() {
-                        @Override
-                        public void run() {
-                            specimenTool.rightAutoSpecimenCollect();
 
-                        }
-                    });
+                    specimenTool.rightAutoSpecimenCollect();
+
 
 
                     actionTimer.resetTimer();
@@ -219,7 +216,7 @@ public class RightAuto extends LinearOpMode {
                 }
                 break;
             case 7:
-                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_DELAY) {
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.CANDY_CANE_ACTION_DELAY) {
                     follower.followPath(pushInZone1Traj,true);
                     setPathState(8);
                 }
@@ -279,7 +276,7 @@ public class RightAuto extends LinearOpMode {
                 }
                 break;
             case 15:
-                if(actionTimer.getElapsedTimeSeconds() > 0.1) { // TODO: Move to AutoConstants
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.AFTER_DROP_0_DELAY) {
 
                     follower.followPath(collect1Traj, true);
                     setPathState(16);
@@ -287,23 +284,35 @@ public class RightAuto extends LinearOpMode {
                 break;
             case 16:
                 if(!follower.isBusy()) {
-                    specimenTool.arm.setPosAndWait((int) DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP_INTEMEDIATE_WAIT.getValue());
+                    specimenTool.arm.rightAutoSpecimenDropIntermediateWait();
 
-                    AZUtil.runInParallel(new Runnable() {
-                        @Override
-                        public void run() {
-                            sleep((int)AutoConstants.SPECIMEN_HANG_DELAY_MS);
-                            specimenTool.rightAutoSpecimenHangPos();
-                        }
-                    });
 
                     follower.followPath(drop1Traj, true);
                     setPathState(17);
                 }
                 break;
             case 17:
+                if((specimenTool.arm.getCurrentPosition() >
+                        (DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.getValue()-AutoConstants.WAIT_TOLERANCE)
+                        && specimenTool.arm.getCurrentPosition() <
+                        (DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.getValue()+AutoConstants.WAIT_TOLERANCE))
+                        && (motorWaitTimer.getElapsedTimeSeconds() > AutoConstants.MOTOR_WAIT_DELAY)) {
+
+                    actionTimer.resetTimer();
+                    setPathState(18);
+                }
+                break;
+            case 18:
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_HANG_DELAY) {
+                    specimenTool.rightAutoSpecimenHangPos();
+                    setPathState(19);
+
+                }
+                break;
+            case 17:
                 if(!follower.isBusy()) {
-                    specimenTool.rightAutoSpecimenDrop();
+                    specimenTool.arm.rightAutoSpecimenDrop();
+
 
                     AZUtil.runInParallel(new Runnable() {
                         @Override
@@ -313,10 +322,30 @@ public class RightAuto extends LinearOpMode {
                         }
                     });
 
-                    follower.followPath(collect2Traj, true);
                     setPathState(18);
                 }
                 break;
+            case 20:
+                if((specimenTool.arm.getCurrentPosition() >
+                        (DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.getValue()-AutoConstants.HIGH_WAIT_TOLERANCE)
+                        && specimenTool.arm.getCurrentPosition() <
+                        (DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.getValue()+AutoConstants.HIGH_WAIT_TOLERANCE))
+                        && (motorWaitTimer.getElapsedTimeSeconds() > AutoConstants.MOTOR_WAIT_DELAY)) {
+
+                    specimenTool.gripper.drop();
+
+                    follower.followPath(collect2Traj, true);
+
+                    actionTimer.resetTimer();
+
+                    setPathState(21);
+                }
+                break;
+            case 21:
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_DELAY_ARM) {
+                    specimenTool.gripper.rollerCollect();
+
+                }
             case 18:
                 if(!follower.isBusy()) {
                     specimenTool.arm.setPosAndWait((int) DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP_INTEMEDIATE_WAIT.getValue());
