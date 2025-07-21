@@ -33,12 +33,12 @@ public class RightAuto extends LinearOpMode {
 
 
     public enum PathState {
-        FINAL_STATE, DROP_0_RAISE_ARM, DROP_0_EJECT, MOVE_TO_SPIKE_MARK_1, LOWER_CANDY_CANE_1,
-        MOVE_TO_PUSH_IN_ZONE_1, MOVE_TO_SPIKE_MARK_2, LOWER_CANDY_CANE_2, MOVE_TO_PUSH_IN_ZONE_2,
-        MOVE_TO_SPIKE_MARK_3, LOWER_CANDY_CANE_3, MOVE_TO_PUSH_IN_ZONE_3, RESET_CANDY_CANE,
+        FINAL_STATE, DROP_0_RAISE_ARM, DROP_0_EJECT, MOVE_TO_SPIKE_MARK_1,
+        MOVE_TO_PUSH_IN_ZONE_1, MOVE_TO_SPIKE_MARK_2, MOVE_TO_PUSH_IN_ZONE_2,
+        MOVE_TO_SPIKE_MARK_3, MOVE_TO_PUSH_IN_ZONE_3,
         MOVE_TO_COLLECT_1, GET_TO_DROP_1, WAIT_FOR_ARM_UP_1, SPECIMEN_TOOL_DROP_POS_1, NINETEEN,
         TWENTY, TWENTY_ONE, TWENTY_TWO, TWENTY_THREE, TWENTY_FOUR, TWENTY_FIVE, TWENTY_SIX,
-        TWENTY_SEVEN, TWENTY_EIGHT, PRE_LOWER_CANDY_CANE_1, MOVE_TO_SCORE_PRELOAD
+        TWENTY_SEVEN, TWENTY_EIGHT, MOVE_TO_SCORE_PRELOAD
 
     }
 
@@ -49,21 +49,24 @@ public class RightAuto extends LinearOpMode {
 
     private final Pose drop0Pose = new Pose(14.7, 63, Math.toRadians(180));
 
-    private final Pose candyCane1Pose = new Pose(30, 50, Math.toRadians(-40));
+    private final Pose SpikeMark1ControlPose1 = new Pose(10, 45, Math.toRadians(180));
 
-    private final Pose pushInZone1Pose = new Pose(27, 48, Math.toRadians(-110));
+    private final Pose candyCane1Pose = new Pose(65, 38, Math.toRadians(180));
 
-    private final Pose candyCane2Pose = new Pose(30, 45, Math.toRadians(-45));
+    private final Pose pushInZone1Pose = new Pose(20, 45, Math.toRadians(180));
 
-    private final Pose pushInZone2Pose = new Pose(30, 45, Math.toRadians(-115));
+    private final Pose candyCane2Pose = new Pose(30, 45, Math.toRadians(180));
 
-    private final Pose candyCane3Pose = new Pose(38, 40, Math.toRadians(-50));
+    private final Pose pushInZone2Pose = new Pose(31, 44, Math.toRadians(180));
 
-    private final Pose pushInZone3Pose = new Pose(21, 26, Math.toRadians(-120));
+    private final Pose candyCane3Pose = new Pose(30, 39, Math.toRadians(180));
 
-    private final Pose collect1Pose = new Pose(19, 27, Math.toRadians(180));
+    private final Pose pushInZone3Pose = new Pose(27, 39, Math.toRadians(180));
 
-    private final Pose drop1Pose = new Pose(37, 74, Math.toRadians(180));
+    private final Pose collect1Pose = new Pose(20, 30, Math.toRadians(180));
+    private final Pose collect1_1Pose = new Pose(13, 40, Math.toRadians(180));
+
+    private final Pose drop1Pose = new Pose(14.7, 63, Math.toRadians(180));
 
     private final Pose collect2Pose = new Pose(13, 20, Math.toRadians(180));
 
@@ -92,7 +95,7 @@ public class RightAuto extends LinearOpMode {
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), drop0Pose.getHeading());
 
         spikeMark1Traj = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(drop0Pose), new Point(candyCane1Pose)))
+                .addPath(new BezierCurve(new Point(drop0Pose), new Point(SpikeMark1ControlPose1), new Point(candyCane1Pose)))
                 .setLinearHeadingInterpolation(drop0Pose.getHeading(), candyCane1Pose.getHeading())
                 .build();
 
@@ -124,6 +127,8 @@ public class RightAuto extends LinearOpMode {
         collect1Traj = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(pushInZone3Pose), new Point(collect1Pose)))
                 .setLinearHeadingInterpolation(pushInZone3Pose.getHeading(), collect1Pose.getHeading())
+                .addPath(new BezierLine(new Point(collect1Pose), new Point(collect1_1Pose)))
+                .setLinearHeadingInterpolation(collect1Pose.getHeading(), collect1_1Pose.getHeading())
                 .build();
 
         drop1Traj = follower.pathBuilder()
@@ -194,52 +199,26 @@ public class RightAuto extends LinearOpMode {
                 if(!follower.isBusy()) {
                     follower.followPath(spikeMark1Traj,true);
 
-                    setPathState(PathState.PRE_LOWER_CANDY_CANE_1);
-                }
-                break;
-            case PRE_LOWER_CANDY_CANE_1:
-                if(pathTimer.getElapsedTimeSeconds() > AutoConstants.PRE_CANDY_CANE_DELAY) {
-                    candyCane.rightAutoRaise();
-                    setPathState(PathState.LOWER_CANDY_CANE_1);
-                }
-                break;
-            case LOWER_CANDY_CANE_1: // set specimen tool pos and lower candy cane
-                if(!follower.isBusy()) {
-
-                    specimenTool.rightAutoSpecimenCollect();
-
-
-
-                    actionTimer.resetTimer();
-                    candyCane.rightAutoLower();
                     setPathState(PathState.MOVE_TO_PUSH_IN_ZONE_1);
-
                 }
                 break;
             case MOVE_TO_PUSH_IN_ZONE_1: // delay for candy cane and move to pushInZone1 pos
-                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.CANDY_CANE_ACTION_DELAY) {
+                if(!follower.isBusy()) {
+                    specimenTool.rightAutoSpecimenCollect();
+
                     follower.followPath(pushInZone1Traj,true);
                     setPathState(PathState.MOVE_TO_SPIKE_MARK_2);
                 }
                 break;
             case MOVE_TO_SPIKE_MARK_2: // raise candy cane and move to spikeMark2 pos
                 if(!follower.isBusy()) {
-                    candyCane.rightAutoRaise();
 
                     follower.followPath(spikeMark2Traj,true);
-                    setPathState(PathState.LOWER_CANDY_CANE_2);
-                }
-                break;
-            case LOWER_CANDY_CANE_2: // lower candy cane
-                if(!follower.isBusy()) {
-                    actionTimer.resetTimer();
-                    candyCane.rightAutoLower();
-
                     setPathState(PathState.MOVE_TO_PUSH_IN_ZONE_2);
                 }
                 break;
             case MOVE_TO_PUSH_IN_ZONE_2: // delay for candy cane and move to pushInZone2 pos
-                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.CANDY_CANE_ACTION_DELAY) {
+                if(!follower.isBusy()) {
 
                     follower.followPath(pushInZone2Traj,true);
                     setPathState(PathState.MOVE_TO_SPIKE_MARK_3);
@@ -247,37 +226,21 @@ public class RightAuto extends LinearOpMode {
                 break;
             case MOVE_TO_SPIKE_MARK_3: // raise candy cane and move to spikeMark3 pos
                 if(!follower.isBusy()) {
-                    candyCane.rightAutoRaise();
 
                     follower.followPath(spikeMark3Traj,true);
-                    setPathState(PathState.LOWER_CANDY_CANE_3);
-                }
-                break;
-            case LOWER_CANDY_CANE_3: // lower candy cane
-                if(!follower.isBusy()) {
-                    actionTimer.resetTimer();
-                    candyCane.rightAutoLower();
-
                     setPathState(PathState.MOVE_TO_PUSH_IN_ZONE_3);
                 }
                 break;
+
             case MOVE_TO_PUSH_IN_ZONE_3: // delay for candy cane and move to pushInZone3 pos
-                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.CANDY_CANE_ACTION_DELAY) {
+                if(!follower.isBusy()) {
 
                     follower.followPath(pushInZone3Traj, true);
-                    setPathState(PathState.RESET_CANDY_CANE);
-                }
-                break;
-            case RESET_CANDY_CANE: // lower candy cane
-                if(!follower.isBusy()) {
-                    actionTimer.resetTimer();
-                    candyCane.reset();
-
                     setPathState(PathState.MOVE_TO_COLLECT_1);
                 }
                 break;
             case MOVE_TO_COLLECT_1: // delay for candy cane and move to collect1 pos
-                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.AFTER_DROP_0_DELAY) {
+                if(!follower.isBusy()) {
 
                     follower.followPath(collect1Traj, true);
                     setPathState(PathState.GET_TO_DROP_1);
@@ -285,19 +248,17 @@ public class RightAuto extends LinearOpMode {
                 break;
             case GET_TO_DROP_1: // set arm pos and move to drop1 pos
                 if(!follower.isBusy()) {
-                    specimenTool.arm.rightAutoSpecimenDropIntermediateWait();
-
+                    specimenTool.arm.setArmPos(DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP);
+                    actionTimer.resetTimer();
 
                     follower.followPath(drop1Traj, true);
                     setPathState(PathState.WAIT_FOR_ARM_UP_1);
                 }
                 break;
             case WAIT_FOR_ARM_UP_1: // wait for arm and reset action timer
-                if((specimenTool.arm.getCurrentPosition() >
-                        (DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.getValue()-AutoConstants.WAIT_TOLERANCE)
-                        && specimenTool.arm.getCurrentPosition() <
-                        (DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.getValue()+AutoConstants.WAIT_TOLERANCE))
-                        || (motorWaitTimer.getElapsedTimeSeconds() > AutoConstants.MOTOR_WAIT_DELAY)) {
+                if(actionTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_DROP_DELAY_ARM) {
+
+                    specimenTool.gripper.rightAutoSpecimenDropPos();
 
                     actionTimer.resetTimer();
                     setPathState(PathState.SPECIMEN_TOOL_DROP_POS_1);
@@ -474,9 +435,10 @@ public class RightAuto extends LinearOpMode {
             telemetry.addData("x", follower.getPose().getX());
             telemetry.addData("y", follower.getPose().getY());
             telemetry.addData("heading", follower.getPose().getHeading());
-            telemetry.addData("action timer: ", actionTimer.getElapsedTimeSeconds());
-            telemetry.addData("path timer: ", pathTimer.getElapsedTimeSeconds());
-            telemetry.addData("opmode timer: ", opmodeTimer.getElapsedTimeSeconds());
+            telemetry.addData("action timer", actionTimer.getElapsedTimeSeconds());
+            telemetry.addData("path timer", pathTimer.getElapsedTimeSeconds());
+            telemetry.addData("opmode timer", opmodeTimer.getElapsedTimeSeconds());
+            telemetry.addData("follower is busy", follower.isBusy());
             telemetry.update();
         }
     }
@@ -486,7 +448,7 @@ public class RightAuto extends LinearOpMode {
         specimenTool.rightAutoReset();
         candyCane = new CandyCane(this);
 
-        sleep(7000);
+        sleep(15000);
 
         telemetry.addLine("Time's Up");
         telemetry.update();

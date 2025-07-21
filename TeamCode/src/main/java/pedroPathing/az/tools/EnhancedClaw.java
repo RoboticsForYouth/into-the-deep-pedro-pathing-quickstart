@@ -275,6 +275,7 @@ public void duringTeleOpReset() {
     }
 
 
+
     public void rightAutoSpecimenPickUp() {
         setPos(RollerPower.PICKUP, WRIST_POS.RIGHT_AUTO_PICKUP_SPECIMEN, Elbow.ELBOW_POS.RIGHT_AUTO_SPECIMEN_PICKUP);
     }

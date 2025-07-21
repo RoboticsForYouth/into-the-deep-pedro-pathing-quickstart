@@ -9,10 +9,8 @@ public class AutoConstants {
     // Timing Constants (in seconds)
     public static final double SPECIMEN_DROP_DELAY_ARM = 0.5;
     public static final double SPECIMEN_DROP_0_DELAY_EJECT = 0.8;
-    public static final double PRE_CANDY_CANE_DELAY = 0.8;
 
     public static final double SPECIMEN_DROP_0_RESET_GRIPPER_DELAY = 0.22;
-    public static final double CANDY_CANE_ACTION_DELAY = 0.17;
     public static final double AFTER_DROP_0_DELAY = 0.1;
 
 

@@ -14,7 +14,7 @@ public class CandyCane extends LinearOpMode {
 
 
     public enum CandyCanePos {
-        RIGHT_AUTO_LOWER(0.0),
+        RIGHT_AUTO_LOWER(0.01),
         RIGHT_AUTO_RAISE(0.1),
         LEFT_AUTO_LEVEL_ONE_ASCENT(0.2),
         PRE_LEFT_AUTO_LEVEL_ONE_ASCENT(0.4),
