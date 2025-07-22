@@ -48,7 +48,15 @@ Motor names and directions are defined in `FConstants.java`:
 - **EnhancedClaw**: Gripper/claw mechanism
 - **Slides**: Linear slide system for vertical movement
 
-## Development Workflow
+## Common Commands
+
+### Build and Deployment
+- **Build**: `./gradlew build` (or `gradlew.bat build` on Windows)
+- **Clean**: `./gradlew clean`
+- **Run Tests**: Deploy to robot via Android Studio and run individual OpModes
+- **Tuning OpModes**: Located in `tuners_tests/` for calibrating robot parameters
+
+### Development Workflow
 
 ### Testing and Tuning
 1. Use tuners in `tuners_tests/` to calibrate robot parameters
@@ -77,3 +85,22 @@ This project uses Pedro Pathing library for:
 - Automatic tuning utilities
 
 The main integration points are in `FConstants.java` and `LConstants.java` where robot-specific parameters are configured for the Pedro Pathing system.
+
+## Design Patterns and Architecture
+
+### Key Design Patterns
+- **FTC OpMode Pattern**: All robot programs extend LinearOpMode or OpMode
+- **State Machine Pattern**: Used in autonomous programs for sequential task execution
+- **Command Pattern**: Used in TeleOp via CommandQueue for asynchronous operations
+- **Modular Subsystems**: Each subsystem (arm, slides, claw) operates independently and can be tested in isolation
+
+### Thread Safety
+- **CommandQueue**: Thread-safe implementation for TeleOp command execution
+- Use `.copy()` for PathChain objects when modifying paths during execution
+- Avoid shared mutable state between subsystems
+
+### Code Organization
+- Each subsystem has its own class with initialization and control methods
+- Autonomous programs use numbered states (e.g., STATE_0, STATE_1) for clarity
+- Constants are centralized in dedicated files (FConstants, LConstants)
+- Tool classes coordinate multiple subsystems for complex operations

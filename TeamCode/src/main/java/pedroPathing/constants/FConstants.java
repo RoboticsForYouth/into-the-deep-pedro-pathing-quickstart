@@ -22,8 +22,9 @@ public class FConstants {
 
         FollowerConstants.mass = 25;
 
-        FollowerConstants.xMovement = 48.5584;
-        FollowerConstants.yMovement = 36.2603;
+        // Increased movement speeds for faster autonomous
+        FollowerConstants.xMovement = 58.0; // was 48.5584
+        FollowerConstants.yMovement = 44.0; // was 36.2603
 
         FollowerConstants.forwardZeroPowerAcceleration = -22.3725;
         FollowerConstants.lateralZeroPowerAcceleration = -51.6619;
@@ -40,7 +41,8 @@ public class FConstants {
         FollowerConstants.useSecondaryDrivePID = false;
         FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.1,0,0,0.6,0); // Not being used, @see useSecondaryDrivePID
 
-        FollowerConstants.zeroPowerAccelerationMultiplier = 3.5;
+        // Increased acceleration multiplier for faster speed changes
+        FollowerConstants.zeroPowerAccelerationMultiplier = 4.2; // was 3.5
         FollowerConstants.centripetalScaling = 0.00003;
 
         FollowerConstants.pathEndTimeoutConstraint = 500;

@@ -6,23 +6,23 @@ package pedroPathing.constants;
  */
 public class AutoConstants {
 
-    // Timing Constants (in seconds)
-    public static final double SPECIMEN_DROP_DELAY_ARM_0 = 0.5;
-    public static final double SPECIMEN_DROP_DELAY_ARM = 0.3;
+    // Timing Constants (in seconds) - Optimized for speed
+    public static final double SPECIMEN_DROP_DELAY_ARM_0 = 0.35; // was 0.5
+    public static final double SPECIMEN_DROP_DELAY_ARM = 0.2; // was 0.3
 
-    public static final double SPECIMEN_DROP_0_DELAY_EJECT = 0.8;
-    public static final double PRE_CANDY_CANE_DELAY = 0.8;
+    public static final double SPECIMEN_DROP_0_DELAY_EJECT = 0.4; // was 0.8
+    public static final double PRE_CANDY_CANE_DELAY = 0.4; // was 0.8
 
     public static final double SPECIMEN_DROP_0_RESET_GRIPPER_DELAY = 0.22;
-    public static final double CANDY_CANE_ACTION_DELAY = 0.15;
+    public static final double CANDY_CANE_ACTION_DELAY = 0.1; // was 0.15
     public static final double AFTER_DROP_0_DELAY = 0.1;
 
-    public static final double AFTER_DROP_DELAY = 0.3;
-    public static final double SPECIMEN_TOOL_COLLECT_DELAY = 0.3;
+    public static final double AFTER_DROP_DELAY = 0.15; // was 0.3
+    public static final double SPECIMEN_TOOL_COLLECT_DELAY = 0.15; // was 0.3
 
 
 
-    public static final double SPECIMEN_HANG_DELAY = 1.2;
+    public static final double SPECIMEN_HANG_DELAY = 0.9; // was 1.2
 
 
     public static final double SPECIMEN_HANG_DELAY_MS = 950; // milliseconds version
@@ -37,8 +37,8 @@ public class AutoConstants {
 //    public static final int FINAL_STATE = -1;
 
     // Action Delays (in milliseconds)
-    public static final double GRIPPER_DROP_DELAY = 0.85;
-    public static final int GRIPPER_COLLECT_DELAY_MS = 600;
+    public static final double GRIPPER_DROP_DELAY = 0.6; // was 0.85
+    public static final int GRIPPER_COLLECT_DELAY_MS = 400; // was 600
     public static final int FIRST_DROP_DELAY_MS = 220;
     public static final int ACTION_DELAY_MS = 100;
 
