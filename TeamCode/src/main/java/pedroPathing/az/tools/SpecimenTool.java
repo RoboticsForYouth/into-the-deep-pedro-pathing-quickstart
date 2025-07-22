@@ -1,13 +1,10 @@
 package pedroPathing.az.tools;
 
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import pedroPathing.az.auto.RightAuto;
 
 @TeleOp
 public class SpecimenTool extends LinearOpMode {
@@ -167,8 +164,8 @@ public class SpecimenTool extends LinearOpMode {
 //        gripper.specimenDrop();
     }
 
-    public void teleOpSpecimenCollect() {
-        gripper.specimenPickUp();
+    public void teleOpSampleCollect() {
+        gripper.rollerPickUp();
 //        sleep(500);
 
         arm.specimenCollect();
@@ -187,16 +184,27 @@ public class SpecimenTool extends LinearOpMode {
 //        sleep(1000);
     }
 
+    public void teleOpSpecimenPickupFromHighDrop() {
+        gripper.specimenPickUpFromFence();
+        slides.move();
+        sleep(900);
+
+//        sleep(500);
+
+        arm.specimenPickupFromFence();
+
+//        sleep(1000);
+    }
+
     public void teleOpLevel2Hang() {
 
         gripper.gripperHang();
+        arm.setPosAndWaitThreshold((int)DoubleArm.DoubleArmPos.LEVEL_TWO_HANG.getValue(), 800);
 
 
         //slides go to 2000
-        slides.setPosAndWait((int) Slides.SlidesPos.LEVEL_2_HANG_START_OPTION2_END_POS.getValue());
-        sleep(1000);
+        slides.level2Hang();
         //arm to 75
-        arm.moveToPosition(DoubleArm.DoubleArmPos.LEVEL_TWO_HANG);
 
 
 //        arm.moveToPosition(DoubleArm.DoubleArmPos.PRE_LEVEL_TWO_HANG);
@@ -425,7 +433,7 @@ public class SpecimenTool extends LinearOpMode {
                 teleOpCollectVertical();
             }
             if (gamepad1.y) {
-                teleOpSpecimenCollect();
+                teleOpSampleCollect();
             }
 
             if (gamepad1.dpad_up) {

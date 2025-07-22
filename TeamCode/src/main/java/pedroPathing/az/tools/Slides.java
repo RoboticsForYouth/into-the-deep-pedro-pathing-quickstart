@@ -47,11 +47,11 @@ public class Slides extends LinearOpMode {
 
     public enum SlidesPos {
 
-        LEVEL_2_HANG_START_OPTION2_END_POS(2050),
+        LEVEL_2_HANG_START_OPTION2_END_POS(2450),
         COLLECT(500),
         MOVE(400),
         SPECIMEN_COLLECT(100),
-        BASKET_DROP(2400),
+        BASKET_DROP(2350),
         LOW_BASKET_DROP(850),
 
 
@@ -198,6 +198,10 @@ public class Slides extends LinearOpMode {
     public void resetPos() {
         setPos(SlidesPos.RESET.value);
         resetSlidePos();
+    }
+
+    public void level2Hang() {
+        setPos(SlidesPos.LEVEL_2_HANG_START_OPTION2_END_POS.value);
     }
 
     public void emergencyResetPos() {

@@ -74,7 +74,7 @@ public class EnhancedClaw extends LinearOpMode {
 
         MOVE(0.485), //0.5
         PICKUP(0.485), //0.5
-        DROP_OFF(0.1), //0.55
+        DROP_OFF(0.7), //0.1
         PICKUP_90(0.21),
         PICKUP_SPECIMEN(0.75), //0.75
         TELEOP_DROP_OFF_SPECIMEN(0), //0.2 0.77
@@ -217,7 +217,7 @@ public void duringTeleOpReset() {
     }
 
 
-    public void specimenPickUp() {
+    public void rollerPickUp() {
         roller.setPower(RollerPower.PICKUP.getPower());
         //wrist and elbow positions do not change
     }
@@ -266,6 +266,11 @@ public void duringTeleOpReset() {
         roller.setPower(RollerPower.PICKUP.getPower());
         setWristPos(WRIST_POS.RIGHT_AUTO_DROP_OFF_SPECIMEN.getPos());
         elbow.setElbowPos(Elbow.ELBOW_POS.RIGHT_AUTO_SPECIMEN_DROP.getPos());
+    }
+
+    public void preRightAutoSpecimenDropPos() {
+
+        setWristPos(WRIST_POS.RIGHT_AUTO_DROP_OFF_SPECIMEN.getPos());
     }
 
     public void rightAutoSpecimenDropPos0() {
@@ -343,7 +348,7 @@ public void duringTeleOpReset() {
             }
 
             if (gamepad1.y) {
-                specimenPickUp();
+                rollerPickUp();
             }
 
             if (gamepad1.right_bumper) {

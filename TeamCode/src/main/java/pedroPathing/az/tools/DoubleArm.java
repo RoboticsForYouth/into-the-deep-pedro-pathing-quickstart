@@ -54,16 +54,16 @@ public class DoubleArm extends LinearOpMode {
     public enum DoubleArmPos {
         //multiple 1.39 times when we replace 435 motor with 312 motor
         RESET(0),
-        COLLECT((int)(17 * ARM_CONVERSION_FACTOR)),  //(-785),
+        COLLECT((int)(17.55 * ARM_CONVERSION_FACTOR)),  //(-785),
         LOW_BASKET_DROP((int)(90 * ARM_CONVERSION_FACTOR)),
 
         SPECIMEN_PICKUP_UP((int)(7.5*ARM_CONVERSION_FACTOR)),
 
-        LEVEL_TWO_HANG((int)(80*ARM_CONVERSION_FACTOR)),
+        LEVEL_TWO_HANG((int)(92*ARM_CONVERSION_FACTOR)),
 
 
-        MOVE((int)(17 * ARM_CONVERSION_FACTOR)), //(-450),
-        BASKET_DROP((int)(98 * ARM_CONVERSION_FACTOR)),
+        MOVE((int)(17.55 * ARM_CONVERSION_FACTOR)), //(-450),
+        BASKET_DROP((int)(92 * ARM_CONVERSION_FACTOR)),
 
         TELEOP_SPECIMEN_DROP((int)(95 * ARM_CONVERSION_FACTOR)), //(600)
 
@@ -83,8 +83,8 @@ public class DoubleArm extends LinearOpMode {
         //RIGHT AUTO!!!
         RIGHT_AUTO_RESET((int)(41 * ARM_CONVERSION_FACTOR)),
         RIGHT_AUTO_SPECIMEN_DROP_INTEMEDIATE_WAIT((int)(20 * ARM_CONVERSION_FACTOR)),
-        RIGHT_AUTO_SPECIMEN_DROP((int)(95 * ARM_CONVERSION_FACTOR)), //(600)
-        RIGHT_AUTO_SPECIMEN_PICKUP_UP((int)(0*ARM_CONVERSION_FACTOR)),
+        RIGHT_AUTO_SPECIMEN_DROP((int)(94 * ARM_CONVERSION_FACTOR)), //(600)
+        RIGHT_AUTO_SPECIMEN_PICKUP_UP((int)(18*ARM_CONVERSION_FACTOR)),
         RIGHT_AUTO_SPECIMEN_PICKUP_INTERMEDIATE_WAIT((int)(80*ARM_CONVERSION_FACTOR)),
         //--------------------------------------------------------------------------------------------------------------------
         SPECIMEN_PICKUP_FROM_FENCE((int)(18*ARM_CONVERSION_FACTOR));
