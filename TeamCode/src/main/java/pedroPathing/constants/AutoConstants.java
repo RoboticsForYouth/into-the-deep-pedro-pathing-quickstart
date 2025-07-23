@@ -11,7 +11,7 @@ public class AutoConstants {
     public static final double SPECIMEN_DROP_DELAY_ARM = 0.3;
 
     public static final double SPECIMEN_DROP_0_DELAY_EJECT = 0.8;
-    public static final double PRE_CANDY_CANE_DELAY = 0.8;
+    public static final double PRE_CANDY_CANE_DELAY = 1.5;
 
     public static final double SPECIMEN_DROP_0_RESET_GRIPPER_DELAY = 0.22;
     public static final double CANDY_CANE_ACTION_DELAY = 0.15;
@@ -30,7 +30,7 @@ public class AutoConstants {
 
     // Startup and Timeout
     public static final int STARTUP_DELAY_MS = 1000;
-    public static final double AUTO_TIMEOUT_SECONDS = 29.5;
+    public static final double AUTO_TIMEOUT_SECONDS = 1000; //29.5
 
     // State Machine
 //    public static final int INITIAL_STATE = 0;

@@ -49,34 +49,34 @@ public class RightAuto extends LinearOpMode {
 
     private final Pose candyCane1ControlPose = new Pose(13, 53);
 
-    private final Pose candyCane1Pose = new Pose(36, 48, Math.toRadians(-60));
+    private final Pose candyCane1Pose = new Pose(36, 49, Math.toRadians(-60));
 
-    private final Pose pushInZone1Pose = new Pose(24, 45, Math.toRadians(-100));
+    private final Pose pushInZone1Pose = new Pose(29, 45, Math.toRadians(-90));
 
-    private final Pose candyCane2Pose = new Pose(32, 43, Math.toRadians(-60));
+    private final Pose candyCane2Pose = new Pose(33, 46, Math.toRadians(-60));
 
-    private final Pose pushInZone2Pose = new Pose(23, 42, Math.toRadians(-90));
+    private final Pose pushInZone2Pose = new Pose(28, 42, Math.toRadians(-85));
 
     private final Pose candyCane3Pose = new Pose(36, 37, Math.toRadians(-70));
 
-    private final Pose pushInZone3Pose = new Pose(25, 38, Math.toRadians(-100));
+    private final Pose pushInZone3Pose = new Pose(30, 38, Math.toRadians(-90));
 
-    private final Pose collect1Pose = new Pose(28, 37, Math.toRadians(180));
+    private final Pose collect1Pose = new Pose(31, 37, Math.toRadians(180));
     private final Pose collect1_1Pose = new Pose(16, 37, Math.toRadians(180));
 
     private final Pose drop1Pose = new Pose(24.3, 63, Math.toRadians(180));
 
-    private final Pose collect2Pose = new Pose(16.9, 43, Math.toRadians(180));
+    private final Pose collect2Pose = new Pose(16.9, 40, Math.toRadians(180));
 
     private final Pose drop2Pose = new Pose(24, 63, Math.toRadians(180));
 
-    private final Pose collect3Pose = new Pose(17, 43, Math.toRadians(180));
+    private final Pose collect3Pose = new Pose(17, 40, Math.toRadians(180));
 
     private final Pose drop3Pose = new Pose(24, 63, Math.toRadians(180));
 
-    private final Pose collect4Pose = new Pose(16.7, 43, Math.toRadians(180));
+    private final Pose collect4Pose = new Pose(16.7, 41, Math.toRadians(180));
 
-    private final Pose drop4Pose = new Pose(24, 63, Math.toRadians(180));
+    private final Pose drop4Pose = new Pose(25, 63, Math.toRadians(180));
 
     private final Pose parkPose = new Pose(17, 43, Math.toRadians(180));
 
@@ -429,7 +429,7 @@ public class RightAuto extends LinearOpMode {
             case MOVE_TO_COLLECT_4:
                 if(actionTimer.getElapsedTimeSeconds() > AutoConstants.SPECIMEN_TOOL_COLLECT_DELAY) {
                     follower.followPath(collect4Traj, true);
-                    setPathState(PathState.PARK);
+                    setPathState(PathState.GET_TO_DROP_4);
 
                 }
                 break;
@@ -486,7 +486,7 @@ public class RightAuto extends LinearOpMode {
 
 
             case END:
-                if(!follower.isBusy()) {
+                if(!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
 
                     setPathState(PathState.FINAL_STATE);
                 }
