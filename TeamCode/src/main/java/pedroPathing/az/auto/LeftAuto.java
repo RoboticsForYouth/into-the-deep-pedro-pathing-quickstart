@@ -14,41 +14,23 @@ import pedroPathing.az.tools.Slides;
 import pedroPathing.constants.AutoConstants;
 import pedroPathing.constants.AutoState;
 
-/**
- * Left-side autonomous strategy focused on sample collection and basket scoring
- *
- * Strategy Overview:
- * 1. Score preloaded sample in high basket (8 points)
- * 2. Collect and score 3 neutral samples (24 points)
- * 3. Push remaining samples to observation zone (6 points)
- * 4. Attempt level 1 ascent if time permits (15 points)
- * 5. Park in observation zone (3 points)
- *
- * Target Score: 50-56 points in autonomous
- */
+
 @Autonomous(name = "Left Auto - Sample Strategy", preselectTeleOp = "IntoTheDeepTeleOp")
 public class LeftAuto extends BaseAuto {
 
-    // Field Poses - Left side starting positions
     private final Pose startPose = new Pose(9, -60, Math.toRadians(0)); // Left side start
-
     // High basket scoring position
     private final Pose highBasketPose = new Pose(55, -55, Math.toRadians(45));
-
     // Sample collection poses (neutral samples on left side)
     private final Pose sample1Pose = new Pose(35, -24, Math.toRadians(0));
     private final Pose sample2Pose = new Pose(45, -24, Math.toRadians(0));
     private final Pose sample3Pose = new Pose(55, -24, Math.toRadians(0));
-
     // Observation zone for sample pushing
     private final Pose observationZonePose = new Pose(24, -60, Math.toRadians(-90));
-
     // Ascent position (if time permits)
     private final Pose ascentPose = new Pose(20, -30, Math.toRadians(0));
-
     // Parking position
     private final Pose parkPose = new Pose(24, -12, Math.toRadians(0));
-
     // Paths
     private Path scorePreloadPath, parkPath;
     private PathChain collectSample1Path, scoreSample1Path, collectSample2Path,
@@ -127,159 +109,124 @@ public class LeftAuto extends BaseAuto {
     @Override
     protected void autonomousPathUpdate() {
         switch (currentState) {
+
             case LEFT_SCORE_PRELOAD_SAMPLE:
-                follower.followPath(scorePreloadPath);
-                setAutoState(AutoState.LEFT_COLLECT_SAMPLE_1);
-                break;
-
-            case LEFT_COLLECT_SAMPLE_1:
                 if (!follower.isBusy()) {
-                    // Move to high basket position and drop preloaded sample
-                    specimenTool.leftAutoDropHighBasket();
+                    // Drop preloaded sample in parallel
+                    new Thread(() -> {
+                        specimenTool.leftAutoDropHighBasket(); // TODO implement
+                    }).start();
 
-                    runInParallel(() -> {
-                        sleep(500); // Wait for drop
-                        // Move to collect first sample
-                        follower.followPath(collectSample1Path, true);
-                    });
+                    // Move to collect first sample
+                    follower.followPath(collectSample1Path);
 
-                    setAutoState(AutoState.LEFT_SCORE_SAMPLE_1);
+                    currentState = AutoState.LEFT_SCORE_SAMPLE_1;
                 }
                 break;
 
             case LEFT_SCORE_SAMPLE_1:
                 if (!follower.isBusy()) {
-                    // Collect first sample
-                    specimenTool.leftAutoCollect(
-                            Slides.SlidesPos.LEFT_AUTO_PICKUP_FIRST,
-                            EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_FIRST,
-                            DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_FIRST
-                    );
+                    // Collect first sample while moving to score
+                    new Thread(() -> {
+                        specimenTool.leftAutoCollect(
+                                Slides.SlidesPos.LEFT_AUTO_PICKUP_FIRST,
+                                EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_FIRST,
+                                DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_FIRST
+                        ); // TODO implement
+                    }).start();
 
-                    runInParallel(() -> {
-                        sleep(800); // Wait for collection
-                        // Move to score first sample
-                        follower.followPath(scoreSample1Path, true);
-                    });
-
-                    setAutoState(AutoState.LEFT_COLLECT_SAMPLE_2);
+                    follower.followPath(scoreSample1Path);
+                    currentState = AutoState.LEFT_COLLECT_SAMPLE_2;
                 }
                 break;
 
             case LEFT_COLLECT_SAMPLE_2:
                 if (!follower.isBusy()) {
-                    // Score first sample
-                    specimenTool.leftAutoLaterDropsHighBasket();
+                    // Score first sample while moving to collect second
+                    new Thread(() -> {
+                        specimenTool.leftAutoLaterDropsHighBasket(); // TODO implement
+                    }).start();
 
-                    runInParallel(() -> {
-                        sleep(600); // Wait for scoring
-                        // Move to collect second sample
-                        follower.followPath(collectSample2Path, true);
-                    });
-
-                    setAutoState(AutoState.LEFT_SCORE_SAMPLE_2);
+                    follower.followPath(collectSample2Path);
+                    currentState = AutoState.LEFT_SCORE_SAMPLE_2;
                 }
                 break;
 
             case LEFT_SCORE_SAMPLE_2:
                 if (!follower.isBusy()) {
-                    // Collect second sample
-                    specimenTool.leftAutoCollect(
-                            Slides.SlidesPos.LEFT_AUTO_PICKUP_SECOND,
-                            EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_SECOND,
-                            DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_SECOND
-                    );
+                    // Collect second sample while moving to score
+                    new Thread(() -> {
+                        specimenTool.leftAutoCollect(
+                                Slides.SlidesPos.LEFT_AUTO_PICKUP_SECOND,
+                                EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_SECOND,
+                                DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_SECOND
+                        ); // TODO implement
+                    }).start();
 
-                    runInParallel(() -> {
-                        sleep(800); // Wait for collection
-                        // Move to score second sample
-                        follower.followPath(scoreSample2Path, true);
-                    });
-
-                    setAutoState(AutoState.LEFT_COLLECT_SAMPLE_3);
+                    follower.followPath(scoreSample2Path);
+                    currentState = AutoState.LEFT_COLLECT_SAMPLE_3;
                 }
                 break;
 
             case LEFT_COLLECT_SAMPLE_3:
                 if (!follower.isBusy()) {
-                    // Score second sample
-                    specimenTool.leftAutoLaterDropsHighBasket();
+                    // Score second sample while moving to collect third
+                    new Thread(() -> {
+                        specimenTool.leftAutoLaterDropsHighBasket(); // TODO implement
+                    }).start();
 
-                    runInParallel(() -> {
-                        sleep(600); // Wait for scoring
-                        // Move to collect third sample
-                        follower.followPath(collectSample3Path, true);
-                    });
-
-                    setAutoState(AutoState.LEFT_SCORE_SAMPLE_3);
+                    follower.followPath(collectSample3Path);
+                    currentState = AutoState.LEFT_SCORE_SAMPLE_3;
                 }
                 break;
 
             case LEFT_SCORE_SAMPLE_3:
                 if (!follower.isBusy()) {
-                    // Collect third sample
-                    specimenTool.leftAutoCollect(
-                            Slides.SlidesPos.LEFT_AUTO_PICKUP_THIRD,
-                            EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_THIRD,
-                            DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_THIRD
-                    );
-
-                    runInParallel(() -> {
-                        sleep(800); // Wait for collection
-                        // Move to score third sample
-                        follower.followPath(scoreSample2Path, true); // Reuse path to basket
-                    });
-
-                    setAutoState(AutoState.LEFT_PUSH_SAMPLES_TO_ZONE);
+                    // Collect third sample while moving to score
+                    new Thread(() -> {
+                        specimenTool.leftAutoCollect(
+                                Slides.SlidesPos.LEFT_AUTO_PICKUP_THIRD,
+                                EnhancedClaw.WRIST_POS.LEFT_AUTO_PICKUP_THIRD,
+                                DoubleArm.DoubleArmPos.LEFT_AUTO_PICKUP_THIRD
+                        ); // TODO implement
+                    }).start();
+                    follower.followPath(scoreSample3Path);
+                    currentState = AutoState.LEFT_PUSH_SAMPLES_TO_ZONE;
                 }
                 break;
-
             case LEFT_PUSH_SAMPLES_TO_ZONE:
                 if (!follower.isBusy()) {
-                    // Score third sample
-                    specimenTool.leftAutoLaterDropsHighBasket();
+                    // Score third sample while moving to observation zone
+                    new Thread(() -> {
+                        specimenTool.leftAutoLaterDropsHighBasket(); // TODO implement
+                    }).start();
 
-                    runInParallel(() -> {
-                        sleep(600); // Wait for scoring
-                        // Move to push remaining samples
-                        follower.followPath(pushSamplesPath, true);
-                    });
-
-                    setAutoState(AutoState.LEFT_ATTEMPT_ASCENT);
+                    follower.followPath(pushSamplesPath);
+                    currentState = AutoState.LEFT_ATTEMPT_ASCENT;
                 }
                 break;
 
             case LEFT_ATTEMPT_ASCENT:
                 if (!follower.isBusy()) {
-                    // Check if we have time for ascent (leave 5 seconds buffer)
-                    if (opmodeTimer.getElapsedTimeSeconds() < AutoConstants.AUTO_TIMEOUT_SECONDS - 5.0) {
-                        // Attempt level 1 ascent
-                        candyCane.leftAutoLevelOneAscent();
+                    // Attempt ascent while moving along ascent path
+                    new Thread(() -> {
+                        candyCane.leftAutoLevelOneAscent(); // TODO implement
+                    }).start();
 
-                        runInParallel(() -> {
-                            sleep(1000); // Wait for ascent setup
-                            follower.followPath(ascentPath, true);
-                        });
-
-                        setAutoState(AutoState.LEFT_PARK);
-                    } else {
-                        // Skip ascent, go directly to park
-                        setAutoState(AutoState.LEFT_PARK);
-                    }
+                    follower.followPath(ascentPath);
+                    currentState = AutoState.LEFT_PARK;
                 }
                 break;
 
             case LEFT_PARK:
                 if (!follower.isBusy()) {
                     // Final parking
-                    follower.followPath(parkPath, true);
-                    setAutoState(AutoState.COMPLETED);
+                    follower.followPath(parkPath);
+                    currentState = AutoState.COMPLETED;
                 }
                 break;
 
             case COMPLETED:
-            case ERROR_RECOVERY:
-            case TIMEOUT_RECOVERY:
                 // Autonomous finished
                 break;
 
@@ -291,11 +238,9 @@ public class LeftAuto extends BaseAuto {
 
     @Override
     protected void resetSubsystems() {
-        // Reset to starting positions for left auto
-        specimenTool.leftAutoReset();
-        candyCane.reset();
-
-        // Set starting pose
+        // Reset all subsystems safely
+        specimenTool.leftAutoReset(); // TODO implement
+        candyCane.reset(); // TODO implement
         follower.setStartingPose(startPose);
     }
 }

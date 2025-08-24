@@ -148,22 +148,17 @@ public class SpecimenTool extends LinearOpMode {
     public void teleOpSpecimenHangPos() {
         arm.setArmPos(DoubleArm.DoubleArmPos.TELEOP_SPECIMEN_DROP);
 
-        AZUtil.runInParallel(new Runnable() {
-            @Override
-            public void run() {
-                sleep(200);
-                gripper.preTeleOpSpecimenDropPos();
-            }
-        });
+        new Thread(() -> {
+            sleep(200);
+            gripper.preTeleOpSpecimenDropPos();
+        }).start();
 
         slides.moveToPosition(Slides.SlidesPos.TELEOP_SPECIMEN_DROP);
         sleep(1000);
 
         gripper.teleOpSpecimenDropPos();
         slides.stopMotor();
-//        gripper.specimenDrop();
     }
-
     public void teleOpSampleCollect() {
         gripper.rollerPickUp();
 //        sleep(500);
@@ -239,77 +234,49 @@ public class SpecimenTool extends LinearOpMode {
 
 
     public void leftAutoDropHighBasket() {
-
-        AZUtil.runInParallel(new Runnable() {
-            @Override
-            public void run() {
-                gripper.leftAutoIntermediate();
-                //sleep(500);
-                arm.setPosAndWait((int) DoubleArm.DoubleArmPos.LEFT_AUTO_BASKET_DROP.getValue());
-                slides.setPosAndWaitWithTolerance((int) Slides.SlidesPos.LEFT_AUTO_BASKET_DROP.getValue(), 15);
-                sleep(1100);
-                gripper.leftAutoSampleDrop();
-//                LeftAutoHighDropArmSetupActionDone = true;
-            }
-        });
+        new Thread(() -> {
+            gripper.leftAutoIntermediate();
+            arm.setPosAndWait((int) DoubleArm.DoubleArmPos.LEFT_AUTO_BASKET_DROP.getValue());
+            slides.setPosAndWaitWithTolerance((int) Slides.SlidesPos.LEFT_AUTO_BASKET_DROP.getValue(), 15);
+            sleep(1100);
+            gripper.leftAutoSampleDrop();
+        }).start();
     }
 
     public void leftAutoCollect(final Slides.SlidesPos slidesPos, final EnhancedClaw.WRIST_POS wristPos, final DoubleArm.DoubleArmPos armPos) {
-        AZUtil.runInParallel(new Runnable() {
-            @Override
-            public void run() {
-                gripper.leftAutoPickup(wristPos);
-                sleep(400);
-                slides.setPosAndWait((int) Slides.SlidesPos.LEFT_AUTO_INTERMEDIATE_PICKUP.getValue());
-                sleep(200);
-                arm.leftAutoPickup(armPos);
-                slides.leftAutoPickup(slidesPos);
-
-            }
-        });
+        new Thread(() -> {
+            gripper.leftAutoPickup(wristPos);
+            sleep(400);
+            slides.setPosAndWait((int) Slides.SlidesPos.LEFT_AUTO_INTERMEDIATE_PICKUP.getValue());
+            sleep(200);
+            arm.leftAutoPickup(armPos);
+            slides.leftAutoPickup(slidesPos);
+        }).start();
     }
 
     public void thirdLeftAutoCollect(final Slides.SlidesPos slidesPos, final EnhancedClaw.WRIST_POS wristPos, final DoubleArm.DoubleArmPos armPos) {
-        AZUtil.runInParallel(new Runnable() {
-            @Override
-            public void run() {
-                gripper.leftAutoPickup(wristPos);
-                sleep(400);
-                slides.setPosAndWait((int) Slides.SlidesPos.LEFT_AUTO_INTERMEDIATE_PICKUP.getValue());
-                sleep(1100);
-                arm.leftAutoPickup(armPos);
-                slides.leftAutoPickup(slidesPos);
-
-            }
-        });
+        new Thread(() -> {
+            gripper.leftAutoPickup(wristPos);
+            sleep(400);
+            slides.setPosAndWait((int) Slides.SlidesPos.LEFT_AUTO_INTERMEDIATE_PICKUP.getValue());
+            sleep(1100);
+            arm.leftAutoPickup(armPos);
+            slides.leftAutoPickup(slidesPos);
+        }).start();
     }
 
     public void leftAutoLaterDropsHighBasket() {
-
-//        slides.reset();
-//        sleep(500);
-
         slides.setPosAndWaitWithTolerance((int) Slides.SlidesPos.RESET.getValue(), 15);
-        //sleep(400);
 
-        AZUtil.runInParallel(new Runnable() {
-            @Override
-            public void run() {
-//                gripper.autoProtect();
-//                sleep(500);
-
-                gripper.leftAutoIntermediate();
-//                sleep(500);
-
-                arm.setPosAndWait((int) DoubleArm.DoubleArmPos.LEFT_AUTO_BASKET_DROP.getValue());
-                slides.setPosAndWaitWithTolerance((int) Slides.SlidesPos.LEFT_AUTO_BASKET_DROP.getValue(), 15);
-                sleep(1000);
-                gripper.leftAutoSampleDrop();
-
-//                LeftAutoHighDropArmSetupActionDone = true;
-            }
-        });
+        new Thread(() -> {
+            gripper.leftAutoIntermediate();
+            arm.setPosAndWait((int) DoubleArm.DoubleArmPos.LEFT_AUTO_BASKET_DROP.getValue());
+            slides.setPosAndWaitWithTolerance((int) Slides.SlidesPos.LEFT_AUTO_BASKET_DROP.getValue(), 15);
+            sleep(1000);
+            gripper.leftAutoSampleDrop();
+        }).start();
     }
+
 
     public void leftAutoResetEnd() {
         gripper.move();
@@ -342,21 +309,13 @@ public class SpecimenTool extends LinearOpMode {
     }
 
     public void rightAutoSpecimenDrop() {
-
-        AZUtil.runInParallel(new Runnable() {
-            @Override
-            public void run() {
-                sleep(600);
-                gripper.rollerCollect();
-            }
-        });
-
+        new Thread(() -> {
+            sleep(600);
+            gripper.rollerCollect();
+        }).start();
     }
 
     public void firstRightAutoSpecimenDrop() {
-//        slides.moveToPosition(Slides.SlidesPos.RESET);
-
-
         arm.setPosAndWaitThreshold((int) DoubleArm.DoubleArmPos.RIGHT_AUTO_SPECIMEN_DROP.getValue(), 45);
         sleep(200);
 
@@ -365,14 +324,10 @@ public class SpecimenTool extends LinearOpMode {
 
         gripper.rightAutoDown();
 
-        AZUtil.runInParallel(new Runnable() {
-            @Override
-            public void run() {
-                sleep(1400);
-                gripper.rollerCollect();
-            }
-        });
-
+        new Thread(() -> {
+            sleep(1400);
+            gripper.rollerCollect();
+        }).start();
     }
 
     public void rightAutoSpecimenCollect() {

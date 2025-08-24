@@ -232,6 +232,10 @@ public void duringTeleOpReset() {
         setWristPos(WRIST_POS.TELEOP_DROP_OFF_SPECIMEN.getPos());
     }
 
+    public void rollerStop() {
+        roller.setPower(RollerPower.STOP.getPower());
+    }
+
 
     //--------------------------------------------------------------------------------------------------------------------
     //LEFT AUTO!!!
