@@ -50,11 +50,15 @@ public class LocalizationTest extends OpMode {
     private DcMotorEx rightRear;
     private List<DcMotorEx> motors;
 
+    FConstants constants = new FConstants();
+
+
     /**
      * This initializes the PoseUpdater, the mecanum drive motors, and the FTC Dashboard telemetry.
      */
     @Override
     public void init() {
+        Constants.setConstants(FConstants.class, LConstants.class);
         poseUpdater = new PoseUpdater(hardwareMap, FConstants.class, LConstants.class);
 
         dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);

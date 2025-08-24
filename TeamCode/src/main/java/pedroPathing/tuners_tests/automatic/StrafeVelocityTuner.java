@@ -60,8 +60,12 @@ public class StrafeVelocityTuner extends OpMode {
 
     private PoseUpdater poseUpdater;
 
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 35;
     public static double RECORD_NUMBER = 10;
+
+
+    FConstants constants = new FConstants();
+
 
     private Telemetry telemetryA;
 
@@ -73,6 +77,7 @@ public class StrafeVelocityTuner extends OpMode {
      */
     @Override
     public void init() {
+Constants.setConstants(FConstants.class, LConstants.class);
         poseUpdater = new PoseUpdater(hardwareMap, FConstants.class, LConstants.class);
 
         leftFront = hardwareMap.get(DcMotorEx.class, leftFrontMotorName);

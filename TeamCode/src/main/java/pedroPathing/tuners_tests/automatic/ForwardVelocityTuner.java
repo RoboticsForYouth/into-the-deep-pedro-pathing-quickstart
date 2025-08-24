@@ -59,12 +59,14 @@ public class ForwardVelocityTuner extends OpMode {
 
     private PoseUpdater poseUpdater;
 
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 30;
     public static double RECORD_NUMBER = 10;
 
     private Telemetry telemetryA;
 
     private boolean end;
+
+    FConstants constants = new FConstants();
 
     /**
      * This initializes the drive motors as well as the cache of velocities and the FTC Dashboard
@@ -72,6 +74,7 @@ public class ForwardVelocityTuner extends OpMode {
      */
     @Override
     public void init() {
+
         poseUpdater = new PoseUpdater(hardwareMap, FConstants.class, LConstants.class);
 
         leftFront = hardwareMap.get(DcMotorEx.class, leftFrontMotorName);
